@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💡 FAQ React e Tailwind (Standalone)</title>
+
+    <!-- NOVO: Favicon usando um Emoji -->
+    <!-- Este ícone aparecerá na aba do navegador -->
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💡</text></svg>">
+
+    <!-- 1. Tailwind CSS CDN (para estilização) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- 2. React e ReactDOM CDN -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!-- 3. Babel CDN (Para transpilar o JSX (syntax React) no navegador) -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Configuração do Tailwind (cores, etc.) -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    // Adiciona uma propriedade de transição para simular o collapse/expand
+                    transitionProperty: {
+                        'max-height': 'max-height'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body>
+
+    <!-- Onde o componente React será montado -->
+    <div id="root"></div>
+
+    <!-- O CÓDIGO REACT A SEGUIR -->
+    <!-- type="text/babel" é crucial para que o Babel transpile o JSX -->
+    <script type="text/babel">
+        // -----------------------------------------------------------
+        // 1. Dados Estáticos
+        // -----------------------------------------------------------
+        const faqData = [
+            {
+                id: 1,
+                question: "Qual é o horário de funcionamento?",
+                answer: "Nosso horário de funcionamento é de Segunda a Sexta, das 9h às 18h. Aos Sábados, atendemos das 9h às 13h. Estamos fechados aos Domingos e feriados nacionais.",
+            },
+            {
+                id: 2,
+                question: "Como posso solicitar um reembolso?",
+                answer: "Para solicitar um reembolso, por favor, acesse a seção \"Minhas Compras\" em sua conta e clique no botão \"Solicitar Reembolso\" ao lado do item desejado. O prazo para processamento é de até 5 dias úteis.",
+            },
+            {
+                id: 3,
+                question: "Vocês oferecem suporte técnico 24 horas?",
+                answer: "Oferecemos suporte técnico premium 24/7 apenas para clientes corporativos. Para clientes padrão, o suporte está disponível de Segunda a Sexta, das 8h às 20h (horário de Brasília), via chat e e-mail.",
+            },
+            {
+                id: 4,
+                question: "Quais métodos de pagamento são aceitos?",
+                answer: "Aceitamos cartões de crédito (Visa, MasterCard, Elo), PIX e boleto bancário. Pagamentos via PIX e cartão são processados imediatamente.",
+            },
+        ];
+
+        // -----------------------------------------------------------
+        // 2. Componente FaqItem
+        // -----------------------------------------------------------
+        const FaqItem = ({ item, isOpen, onClick }) => {
+            const { useState, useEffect } = React;
+            
+            return (
+                <div className="border border-gray-200 rounded-lg mb-3 shadow-sm transition-all duration-300">
+                    <button
+                        className="w-full text-left p-4 flex justify-between items-center text-lg font-semibold text-blue-800 bg-white hover:bg-blue-50 focus:outline-none rounded-lg"
+                        onClick={() => onClick(item.id)}
+                        aria-expanded={isOpen}
+                    >
+                        <span>{item.question}</span>
+                        {/* Ícone de seta girando com base no estado isOpen */}
+                        <svg
+                            className={`w-5 h-5 transition-transform duration-300 ${isOpen ? 'transform rotate-180 text-blue-600' : 'text-gray-500'}`}
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+
+                    {/* Corpo da resposta que é renderizado condicionalmente */}
+                    <div
+                        // max-h-96 é um valor alto o suficiente para caber o texto, 
+                        // permitindo a transição suave (limitação do Tailwind/CSS)
+                        className={`overflow-hidden transition-max-height duration-500 ease-in-out ${
+                          isOpen ? 'max-h-96 opacity-100 p-4 pt-0' : 'max-h-0 opacity-0'
+                        }`}
+                        aria-hidden={!isOpen}
+                    >
+                        <p className="text-gray-700 leading-relaxed pt-2 border-t border-gray-100">{item.answer}</p>
+                    </div>
+                </div>
+            );
+        };
+
+        // -----------------------------------------------------------
+        // 3. Componente Principal App
+        // -----------------------------------------------------------
+        const App = () => {
+            const { useState, useMemo } = React;
+
+            const [searchTerm, setSearchTerm] = useState('');
+            const [openItemId, setOpenItemId] = useState(null);
+
+            // Usa useMemo para otimizar o filtro, recomputando apenas quando searchTerm muda
+            const filteredFaq = useMemo(() => {
+                return faqData.filter(item => {
+                    const lowerCaseSearch = searchTerm.toLowerCase();
+                    return (
+                        item.question.toLowerCase().includes(lowerCaseSearch) ||
+                        item.answer.toLowerCase().includes(lowerCaseSearch)
+                    );
+                });
+            }, [searchTerm]);
+
+            const handleItemClick = (id) => {
+                setOpenItemId(openItemId === id ? null : id);
+            };
+
+            return (
+                <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+                    <div className="w-full max-w-3xl bg-white p-6 md:p-8 rounded-xl shadow-2xl">
+                        <h1 className="text-4xl font-extrabold text-center mb-6 text-blue-700">
+                            Perguntas Frequentes (FAQ)
+                        </h1>
+
+                        {/* Input de Busca */}
+                        <div className="mb-6">
+                            <input
+                                type="text"
+                                className="w-full p-4 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 shadow-md"
+                                placeholder="Digite para buscar nas perguntas ou respostas..."
+                                value={searchTerm}
+                                onChange={(e) => {
+                                    setSearchTerm(e.target.value);
+                                    setOpenItemId(null); 
+                                }}
+                            />
+                        </div>
+
+                        {/* Acordeão */}
+                        <div className="space-y-4" role="tablist">
+                            {filteredFaq.length > 0 ? (
+                                filteredFaq.map((item) => (
+                                    <FaqItem
+                                        key={item.id}
+                                        item={item}
+                                        isOpen={item.id === openItemId}
+                                        onClick={handleItemClick}
+                                    />
+                                ))
+                            ) : (
+                                <div className="text-center p-8 bg-yellow-50 rounded-lg text-yellow-800 border border-yellow-300">
+                                    Nenhuma pergunta encontrada para "{searchTerm}".
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // -----------------------------------------------------------
+        // 4. Montagem do App
+        // -----------------------------------------------------------
+        const container = document.getElementById('root');
+        const root = ReactDOM.createRoot(container);
+        root.render(<App />);
+
+    </script>
+</body>
+
+</html>

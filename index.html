@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acordeão de Perguntas Frequentes (FAQ)</title>
+
+    <!-- 1. Bootstrap 5 CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        xintegrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <!-- Estilos Personalizados e Mínimos -->
+    <style>
+        .faq-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .accordion-button {
+            font-weight: 600;
+            color: #004d99;
+        }
+
+        .accordion-body {
+            color: #343a40;
+            line-height: 1.6;
+        }
+
+        .accordion-item {
+            border-radius: 0.5rem !important;
+            margin-bottom: 10px;
+            border: 1px solid #dee2e6;
+            transition: all 0.3s ease;
+            /* Adiciona transição para o efeito de filtro */
+        }
+
+        /* Garantindo que o input de busca também use o estilo do Bootstrap */
+        #faqSearch {
+            padding: 12px 15px;
+            border-radius: 0.5rem;
+            border: 1px solid #ced4da;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container faq-container">
+        <h1 class="text-center mb-4 text-primary">Perguntas Frequentes (FAQ)</h1>
+
+        <!-- NOVO CAMPO DE PESQUISA -->
+        <div class="mb-4">
+            <input type="text" id="faqSearch" class="form-control"
+                placeholder="Digite para buscar nas perguntas ou respostas..." onkeyup="filterFAQ()">
+        </div>
+
+        <!-- Estrutura do Acordeão do Bootstrap -->
+        <div class="accordion" id="faqAccordion">
+
+            <!-- Item 1 da FAQ -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Qual é o horário de funcionamento?
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                    data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Nosso horário de funcionamento é de Segunda a Sexta, das 9h às 18h. Aos Sábados, atendemos das
+                        9h às 13h. Estamos fechados aos Domingos e feriados nacionais.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item 2 da FAQ -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        Como posso solicitar um reembolso?
+                    </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                    data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Para solicitar um reembolso, por favor, acesse a seção "Minhas Compras" em sua conta e clique no
+                        botão "Solicitar Reembolso" ao lado do item desejado. O prazo para processamento é de até 5 dias
+                        úteis.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item 3 da FAQ -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingThree">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        Vocês oferecem suporte técnico 24 horas?
+                    </button>
+                </h2>
+                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
+                    data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Oferecemos suporte técnico premium 24/7 apenas para clientes corporativos. Para clientes padrão,
+                        o suporte está disponível de Segunda a Sexta, das 8h às 20h (horário de Brasília), via chat e
+                        e-mail.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item 4 da FAQ - Novo item para testar a busca -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingFour">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                        Quais métodos de pagamento são aceitos?
+                    </button>
+                </h2>
+                <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour"
+                    data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Aceitamos cartões de crédito (Visa, MasterCard, Elo), PIX e boleto bancário. Pagamentos via PIX
+                        e cartão são processados imediatamente.
+                    </div>
+                </div>
+            </div>
+
+        </div> <!-- Fim do Acordeão -->
+    </div>
+
+    <!-- 2. Bootstrap 5 JS Bundle CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        xintegrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+        </script>
+
+    <!-- 2. script.js - Lógica de Pesquisa -->
+    <script>
+        function filterFAQ() {
+            // Obtém o termo de busca e converte para minúsculas
+            const searchTerm = document.getElementById('faqSearch').value.toLowerCase();
+            // Seleciona todos os itens do acordeão
+            const items = document.querySelectorAll('.accordion-item');
+
+            items.forEach(item => {
+                // Obtém o texto do cabeçalho (pergunta)
+                const headerText = item.querySelector('.accordion-button').textContent.toLowerCase();
+                // Obtém o texto do corpo (resposta)
+                const bodyText = item.querySelector('.accordion-body').textContent.toLowerCase();
+
+                // Verifica se o termo de busca está presente no cabeçalho OU no corpo
+                if (headerText.includes(searchTerm) || bodyText.includes(searchTerm)) {
+                    // Se houver correspondência, exibe o item
+                    item.style.display = 'block';
+                } else {
+                    // Se não houver correspondência, oculta o item
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        console.log("Acordeão pronto com Bootstrap! Funcionalidade de pesquisa adicionada.");
+    </script>
+
+</body>
+
+</html>
